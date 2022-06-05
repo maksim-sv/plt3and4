@@ -17,7 +17,7 @@ namespace plt3
         }
         public int Step()//0 continue,-1 error, 1 success
         {
-            if (index == str.Length) 
+            if (index == str.Length)
                 return 1;
             char c = str[index];
             switch (currentState)
@@ -88,17 +88,20 @@ namespace plt3
                     {
                         if (operand.type == "const")
                         {
+                            index++;
                             operand.value += c;
                             return 0;
                         }
 
                         else if (operand.type == "id")
                         {
+                            index++;
                             operand.value += c;
                             return 0;
                         }
                         else if (operand.type == "")
                         {
+                            index++;
                             operand.type = "const";
                             operand.value += c;
                             return 0;
@@ -122,13 +125,13 @@ namespace plt3
                         operand = ("", "");
                         return 0;
                     }
-                    Status.AddErrorRecord($"Неправильное выражение равнения");
+                    Status.AddErrorRecord($"Неправильное выражение сравнения");
                     return -1;
                 case state.EQEXPMID:
                     if (Char.IsWhiteSpace(c))
                     {
                         if (operand.value == "") { index++; return 0; }
-                        currentState = state.EQEXPRIGHT;index++;
+                        currentState = state.EQEXPRIGHT; index++;
                         return 0;
                     }
                     if (c == '=' || c == '<' || c == '>')
@@ -148,8 +151,9 @@ namespace plt3
                     if (str.Substring(index, 4) == "then" && Char.IsWhiteSpace(str[index + 4])) { index += 5; Status.AddLexeme("then", "then"); currentState = state.OPERATORS; return 0; }
                     if (str.Substring(index, 3) == "and" && Char.IsWhiteSpace(str[index + 3])) { index += 4; Status.AddLexeme("and", "binaryOp"); currentState = state.EQEXPLEFT; return 0; }
                     if (str.Substring(index, 2) == "or" && Char.IsWhiteSpace(str[index + 2])) { index += 3; Status.AddLexeme("or", "binaryOp"); currentState = state.EQEXPLEFT; return 0; }
+
                     Status.AddErrorRecord($"Неправильное выражение равнения");
-                    return 0;
+                    return -1;
                 case state.EQEXPRIGHT:
                     if (Char.IsWhiteSpace(c))
                     {
@@ -207,12 +211,13 @@ namespace plt3
                         }
                         else if (operand.type == "")
                         {
+                            index++;
                             operand.type = "const";
                             operand.value += c;
                             return 0;
                         }
                     }
-                    Status.AddErrorRecord($"Неправильное выражение равнения");
+                    Status.AddErrorRecord($"Неправильное выражение сравнения");
                     return -1;
 
                 case state.EQEXAFTER:
@@ -221,7 +226,7 @@ namespace plt3
                     if (str.Substring(index, 3) == "and" && Char.IsWhiteSpace(str[index + 3])) { index += 4; Status.AddLexeme("and", "binaryOp"); currentState = state.LOGEXP; return 0; }
                     if (str.Substring(index, 2) == "or" && Char.IsWhiteSpace(str[index + 2])) { index += 3; Status.AddLexeme("or", "binaryOp"); currentState = state.LOGEXP; return 0; }
 
-                    Status.AddErrorRecord($"Неправильное выражение равнения");
+                    Status.AddErrorRecord($"Неправильное выражение сравнения");
                     return -1;
 
                 case state.OPERATORS:
@@ -272,6 +277,7 @@ namespace plt3
                     if (Char.IsWhiteSpace(c))
                     {
                         if (operand.value == "") { index++; return 0; }
+                        if (Checker.IsKeyword(operand.value)) { Status.AddErrorRecord($"ключевое слово {{{operand.value}}} использовано как операнд"); return -1; }
                         index++; currentState = state.ARITHMETICOP; Status.AddLexeme(operand.value, operand.type); operand = ("", ""); return 0;
                     }
 
@@ -310,7 +316,17 @@ namespace plt3
                         operand.value += c;
                         return 0;
                     }
-                    if (c == ';') { index++; currentState = state.OPERATORS; Status.AddLexeme(operand.value, operand.type); Status.AddLexeme(";", "separator"); operand = ("", ""); return 0; }
+                    if (c == ';')
+                    {
+                        if (operand.value != "")
+                        {
+                            index++; currentState = state.OPERATORS; Status.AddLexeme(operand.value, operand.type); Status.AddLexeme(";", "separator"); operand = ("", ""); return 0;
+                        }
+                        else {
+                            Status.AddErrorRecord($"; использована как операнд");
+                            return -1;
+                        }
+                    }
                     if (c == '+' || c == '-' || c == '*' || c == '/') { index++; Status.AddLexeme(operand.value, operand.type); Status.AddLexeme(c.ToString(), "arithmOP"); operand = ("", ""); return 0; }
 
                     Status.AddErrorRecord($"Неправильное арифметическое выражение");
@@ -339,7 +355,7 @@ namespace plt3
                 case state.F:
                     foreach (char t in str.Substring(index))
                     {
-                        if (!Char.IsWhiteSpace(t)) { Status.AddErrorRecord($"конструкция должна заканчиваться end");  return -1; }
+                        if (!Char.IsWhiteSpace(t)) { Status.AddErrorRecord($"конструкция должна заканчиваться end"); return -1; }
                     }
                     return 1;
             }

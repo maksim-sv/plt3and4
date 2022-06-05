@@ -77,12 +77,15 @@ namespace plt3
                 result = plt3.Step();
                 if (prevState == plt3.currentState) counterState++;
                 else { prevState = plt3.currentState; }
-                if (counterState > 1000) { result = -1; Status.AddErrorRecord("бесконечный цикл)"); }
+                if (counterState > 10000) { result = -1; Status.AddErrorRecord("бесконечный цикл"); System.Diagnostics.Debug.Print(prevState.ToString()); }
                 if (plt3.index>str.Length) { result = -1; Status.AddErrorRecord("конструкция не закончена"); }
             }
             if (result==-1)
             {
-                Error();
+                TextBox.Focus();
+                TextBox.Select(plt3.index, 1);
+                MessageBox.Show(Status.PrintErr()+$"\nОшибка возле символа ({plt3.index})","Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                PrintLexemesGrid();
             }
             else
             {

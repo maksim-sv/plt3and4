@@ -1,0 +1,11 @@
+C:\Users\slim\Documents\code\c#\my\plt3\bin\Release\plt3.exe.config
+C:\Users\slim\Documents\code\c#\my\plt3\bin\Release\plt3.exe
+C:\Users\slim\Documents\code\c#\my\plt3\bin\Release\plt3.pdb
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.csproj.AssemblyReference.cache
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.csproj.SuggestedBindingRedirects.cache
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.Form1.resources
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.Properties.Resources.resources
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.csproj.GenerateResource.cache
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.csproj.CoreCompileInputs.cache
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.exe
+C:\Users\slim\Documents\code\c#\my\plt3\obj\Release\plt3.pdb

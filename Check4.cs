@@ -96,11 +96,11 @@ namespace plt3
 
             foreach (string c in binarylogicalOperation)//if logExp binaryOp EqExp
             {
-                MatchCollection matches = Regex.Matches(str, c);
+                MatchCollection matches = Regex.Matches(str, @"\s"+c+@"\s");
                 if (matches.Count>0)
                 {
-                    index = matches[matches.Count-1].Index;
-                    string leftPart = str.Substring(0, index), rightPart = str.Substring(index + c.Length);
+                    index = matches[matches.Count-1].Index+1;
+                    string leftPart = str.Substring(0, index), rightPart = str.Substring(index + c.Length+1);
                     if (IsLogicExpression(leftPart))
                     {
                         if (c == "and") Status.AddLexeme(c, "and");
@@ -149,6 +149,7 @@ namespace plt3
         public static bool IsOperand(string str)
         {
             str = str.Trim();
+            if (str=="") { Status.AddErrorRecord($"пустой символ использован как операнд"); return false; }
             if (IsConst(str) || IsId(str)) return true;
             else { Status.AddErrorRecord($"{{{str}}} не является операндом"); return false; }
         }
@@ -214,7 +215,7 @@ namespace plt3
             if (separatorIndex == -1)//operator
             {
                 if (Checker.IsOperator(str)) return true;
-                else return false;
+                else { /*Status.AddErrorRecord($"{{{str}}} не является оператором"); */return false; }
             }
             else//operators;operator
             {
