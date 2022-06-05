@@ -87,8 +87,8 @@
             this.TextBox.Name = "TextBox";
             this.TextBox.Size = new System.Drawing.Size(217, 269);
             this.TextBox.TabIndex = 0;
-            this.TextBox.Text = " \r\n if a=b or a<>d and not a\r\n   then idu=2; \r\n   output ce\r\nelseif a<>b then \r\n " +
-    " output 4\r\nelseif a=c then \r\n  f=1+2*ty\r\nelse \r\n  k=8+4/rel11\r\nend";
+            this.TextBox.Text = " \r\n if not a=b or a<>d and df\r\n   then idu=2; \r\n   output ce\r\nelseif a<>b then \r\n" +
+    "  output 4\r\nelseif a=c then \r\n  f=1+2*ty\r\nelse \r\n  k=8+4/rel11\r\nend";
             this.TextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // lexemesGrid
